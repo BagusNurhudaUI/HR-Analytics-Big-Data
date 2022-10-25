@@ -1,0 +1,66 @@
+version: '3'
+services:
+  postgres:
+    build: pqsql/.
+    container_name: postgres
+    restart: always
+    environment :
+      POSTGRES_USER : postgres
+      POSTGRES_PASSWORD : password
+      POSTGRES_DB : postgresdb
+    # volumes:
+    # - ./postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  grafana: 
+    container_name: grafana
+    image: "grafana/grafana"
+    restart: unless-stopped
+    links:
+      - postgres
+    ports:
+      - "3000:3000"
+    # volumes:
+    #   - ./grafana:/var/lib/grafana
+
+
+  nifi:
+    build: nifi-data/.
+    # image: new-nifi
+    container_name: nifi
+    restart: unless-stopped
+    environment:
+      SINGLE_USER_CREDENTIALS_USERNAME : admin
+      SINGLE_USER_CREDENTIALS_PASSWORD : adminadmin123
+      # NIFI_HOME : /opt/nifi/nifi-current
+      # NIFI_LOG_DIR : /opt/nifi/nifi-current/logs
+      # NIFI_PID_DIR : /opt/nifi/nifi-current/run
+      # NIFI_BASE_DIR  : /opt/nifi
+      NIFI_WEB_HTTP_PORT : '8443'
+    ports:
+      - 8443:8443
+    volumes:
+      - ./nifi-data/template/:/opt/nifi/conf/templates/
+
+  my-sql:
+    container_name: mysql
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'user'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'password'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    # volumes:
+    #   - ./mysql:/var/lib/mysq
