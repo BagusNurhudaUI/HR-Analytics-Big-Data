@@ -1,0 +1,9 @@
+psycopg2-binary
+cffi==1.15.1
+charset-normalizer==2.1.1
+cryptography==38.0.1
+pdfminer.six==20220524
+psycopg2==2.9.3
+pycparser==2.21
+PyMuPDF==1.20.2
+Flask>=2.0.2

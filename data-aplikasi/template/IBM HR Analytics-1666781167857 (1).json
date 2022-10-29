@@ -1,0 +1,1317 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_HR_ANALYTICS",
+      "label": "HR Analytics",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.1.4"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "New link",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 14,
+      "panels": [],
+      "title": "Job Promotion and Rotation",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_HR_ANALYTICS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 24,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_HR_ANALYTICS}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT firstname, lastname, employeenumber, educationfield, trainingtimeslastyear, yearsatcompany, jobsatisfaction, relationshipsatisfaction, worklifebalance FROM employee\nWHERE jobdirect IN ($jobdirect) AND joblevel = '$joblevel'",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Employee List",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_HR_ANALYTICS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 22,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_HR_ANALYTICS}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT firstname, lastname, employeenumber, jobtitle FROM employee\r\nWHERE joblevel = '$joblevel' AND education >= 2 AND jobsatisfaction >= 3 AND performancerating >= 3\r\nAND relationshipsatisfaction >= 3 AND totalworkingyears >= 10\r\nAND trainingtimeslastyear >= 3 AND worklifebalance >= 3 AND yearsatcompany >= 5\r\nAND yearsincurrentrole >= 3 AND yearssincelastpromotion >= 1 AND \r\n(educationfield =\r\n  CASE $jobdirect \r\n    WHEN 'IT' THEN 'Technical Degree'\r\n    WHEN 'Marketing' THEN 'Marketing'\r\n    WHEN 'Human Resources' THEN 'Social Sciences'\r\n    ELSE ''\r\n  END\r\nOR\r\neducationfield =\r\n  CASE $jobdirect \r\n    WHEN 'IT' THEN 'Life Sciences'\r\n    WHEN 'Marketing' THEN 'Other'\r\n    WHEN 'Human Resources' THEN 'Technical Degree'\r\n    ELSE ''\r\n  END\r\nOR\r\neducationfield =\r\n  CASE $jobdirect \r\n    WHEN 'IT' THEN 'Life Sciences'\r\n    WHEN 'Marketing' THEN 'Other'\r\n    WHEN 'Human Resources' THEN 'Life Sciences'\r\n    ELSE ''\r\n  END\r\nOR\r\neducationfield =\r\n  CASE $jobdirect \r\n    WHEN 'IT' THEN 'Life Sciences'\r\n    WHEN 'Marketing' THEN 'Other'\r\n    WHEN 'Human Resources' THEN 'Marketing'\r\n    ELSE ''\r\n  END\r\nOR\r\neducationfield =\r\n  CASE $jobdirect \r\n    WHEN 'IT' THEN 'Life Sciences'\r\n    WHEN 'Marketing' THEN 'Other'\r\n    WHEN 'Human Resources' THEN 'Other'\r\n    ELSE ''\r\n  END)\r\nAND jobdirect IN ($jobdirect)\r\nORDER BY performancerating DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Automatic Promotion (based on performance)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_HR_ANALYTICS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 16,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_HR_ANALYTICS}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT firstname, lastname, employeenumber, jobtitle FROM employee\r\nWHERE joblevel = '$joblevel' AND education >= '$education' AND jobsatisfaction >= '$jobsatisfaction' AND performancerating >=\r\n'$performancerating'\r\nAND relationshipsatisfaction >= '$relationshipsatisfaction' AND totalworkingyears >= '$totalworkingyears'\r\nAND trainingtimeslastyear >= '$trainingtimeslastyear' AND worklifebalance >= '$worklifebalance' AND yearsatcompany >= '$yearsatcompany'\r\nAND yearsincurrentrole >= '$yearsincurrentrole' AND yearssincelastpromotion >= '$yearssincelastpromotion' AND educationfield IN\r\n($educationfield) AND jobdirect IN ($jobdirect)\r\nORDER BY $orderby DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Manual Promotion",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_HR_ANALYTICS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 18,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_HR_ANALYTICS}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT firstname, lastname, employeenumber, joblevel, jobtitle FROM employee\r\nWHERE jobsatisfaction < '$jobsatisfaction' AND performancerating >= '$performancerating'\r\nAND relationshipsatisfaction < '$relationshipsatisfaction' AND totalworkingyears >= '$totalworkingyears'\r\nAND trainingtimeslastyear >= '$trainingtimeslastyear' AND worklifebalance < '$worklifebalance' AND yearsatcompany >= '$yearsatcompany'\r\nAND yearsincurrentrole >= '$yearsincurrentrole' AND yearssincelastpromotion >= '$yearssincelastpromotion' AND jobdirect IN ($jobdirect)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Rotation",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 12,
+      "panels": [],
+      "title": "Demography  Employee",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_HR_ANALYTICS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 26
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_HR_ANALYTICS}"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) FROM employee WHERE jobdirect IN ($jobdirect) AND yearofentry BETWEEN $start_year AND $end_year",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Total Employee",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_HR_ANALYTICS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#703fff",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 26
+      },
+      "id": 20,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_HR_ANALYTICS}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT CAST(attrition AS character varying), COUNT(*) FROM employee WHERE jobdirect IN ($jobdirect) AND yearofentry BETWEEN $start_year AND $end_year GROUP BY attrition",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Attrition Comparison",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_HR_ANALYTICS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 26
+      },
+      "id": 4,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_HR_ANALYTICS}"
+          },
+          "format": "table",
+          "group": [
+            {
+              "params": [
+                "gender"
+              ],
+              "type": "column"
+            }
+          ],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  gender,\n  count(gender)\nFROM employee\nWHERE\n  jobdirect IN ($jobdirect) AND yearofentry BETWEEN $start_year AND $end_year\nGROUP BY gender\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "gender"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "aggregate"
+              }
+            ]
+          ],
+          "table": "employee",
+          "timeColumn": "none",
+          "timeColumnType": "text",
+          "where": [
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "jobdirect",
+                "=",
+                "$Directorate"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Gender Comparison",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_HR_ANALYTICS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-YlRd"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange"
+              },
+              {
+                "color": "#F2495C",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 33
+      },
+      "id": 10,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "9.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_HR_ANALYTICS}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT maritalstatus, COUNT(*) FROM employee WHERE jobdirect IN ($jobdirect) AND yearofentry BETWEEN $start_year AND $end_year GROUP BY maritalstatus",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Marital Status ",
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_HR_ANALYTICS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlPu"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 33
+      },
+      "id": 6,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "9.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_HR_ANALYTICS}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT educationfield, COUNT(*) FROM employee WHERE jobdirect IN ($jobdirect) AND yearofentry BETWEEN $start_year AND $end_year GROUP BY educationfield",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Education Field Distribution",
+      "transparent": true,
+      "type": "barchart"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT yearofentry FROM employee",
+        "description": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Start Year",
+        "multi": false,
+        "name": "start_year",
+        "options": [],
+        "query": "SELECT DISTINCT yearofentry FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 4,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT yearofentry FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "End Year",
+        "multi": false,
+        "name": "end_year",
+        "options": [],
+        "query": "SELECT DISTINCT yearofentry FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 4,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT education FROM employee WHERE education IS NOT NULL",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Education",
+        "multi": false,
+        "name": "education",
+        "options": [],
+        "query": "SELECT DISTINCT education FROM employee WHERE education IS NOT NULL",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT educationfield FROM employee",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Education Field",
+        "multi": true,
+        "name": "educationfield",
+        "options": [],
+        "query": "SELECT DISTINCT educationfield FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT jobdirect FROM employee",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Directorate",
+        "multi": true,
+        "name": "jobdirect",
+        "options": [],
+        "query": "SELECT jobdirect FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT joblevel FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job Level",
+        "multi": false,
+        "name": "joblevel",
+        "options": [],
+        "query": "SELECT DISTINCT joblevel FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT jobtitle FROM employee WHERE jobdirect IN ($jobdirect) AND joblevel = '$joblevel'",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job Title",
+        "multi": false,
+        "name": "jobtitle",
+        "options": [],
+        "query": "SELECT DISTINCT jobtitle FROM employee WHERE jobdirect IN ($jobdirect) AND joblevel = '$joblevel'",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT performancerating FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Performance Rating",
+        "multi": false,
+        "name": "performancerating",
+        "options": [],
+        "query": "SELECT DISTINCT performancerating FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT totalworkingyears FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Total Working Years",
+        "multi": false,
+        "name": "totalworkingyears",
+        "options": [],
+        "query": "SELECT DISTINCT totalworkingyears FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT trainingtimeslastyear FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Training Times Last Years",
+        "multi": false,
+        "name": "trainingtimeslastyear",
+        "options": [],
+        "query": "SELECT DISTINCT trainingtimeslastyear FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT yearsatcompany FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Years at Company",
+        "multi": false,
+        "name": "yearsatcompany",
+        "options": [],
+        "query": "SELECT DISTINCT yearsatcompany FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT yearsincurrentrole FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Years in Current Role",
+        "multi": false,
+        "name": "yearsincurrentrole",
+        "options": [],
+        "query": "SELECT DISTINCT yearsincurrentrole FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT yearssincelastpromotion FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Years Since Last Promotion",
+        "multi": false,
+        "name": "yearssincelastpromotion",
+        "options": [],
+        "query": "SELECT DISTINCT yearssincelastpromotion FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT jobsatisfaction FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job Satisfaction",
+        "multi": false,
+        "name": "jobsatisfaction",
+        "options": [],
+        "query": "SELECT DISTINCT jobsatisfaction FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT relationshipsatisfaction FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Relationship Satisfaction",
+        "multi": false,
+        "name": "relationshipsatisfaction",
+        "options": [],
+        "query": "SELECT DISTINCT relationshipsatisfaction FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_HR_ANALYTICS}"
+        },
+        "definition": "SELECT DISTINCT worklifebalance FROM employee",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Work Life Balance",
+        "multi": false,
+        "name": "worklifebalance",
+        "options": [],
+        "query": "SELECT DISTINCT worklifebalance FROM employee",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "yearsatcompany",
+          "value": "yearsatcompany"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Order By",
+        "multi": false,
+        "name": "orderby",
+        "options": [
+          {
+            "selected": true,
+            "text": "yearsatcompany",
+            "value": "yearsatcompany"
+          },
+          {
+            "selected": false,
+            "text": "yearssincelastpromotion",
+            "value": "yearssincelastpromotion"
+          },
+          {
+            "selected": false,
+            "text": "performancerating",
+            "value": "performancerating"
+          }
+        ],
+        "query": "yearsatcompany,yearssincelastpromotion,performancerating",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": false
+  },
+  "timezone": "",
+  "title": "IBM HR Analytics",
+  "uid": "yX5s0jGVz",
+  "version": 89,
+  "weekStart": ""
+}

@@ -8,8 +8,8 @@ services:
       POSTGRES_USER : postgres
       POSTGRES_PASSWORD : password
       POSTGRES_DB : postgresdb
-    # volumes:
-    # - ./postgres:/var/lib/postgresql/data
+    volumes:
+    - ./volume/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
@@ -21,34 +21,42 @@ services:
       - postgres
     ports:
       - "3000:3000"
-    # volumes:
-    #   - ./grafana:/var/lib/grafana
+    volumes:
+      - ./volume/grafana:/var/lib/grafana
 
 
   nifi:
-    build: nifi-data/.
-    # image: new-nifi
+    build: nifi/.
     container_name: nifi
     restart: unless-stopped
     environment:
       SINGLE_USER_CREDENTIALS_USERNAME : admin
       SINGLE_USER_CREDENTIALS_PASSWORD : adminadmin123
+      NIFI_WEB_PROXY_HOST : 
+      NIFI_WEB_HTTPS_HOST: 0.0.0.0
+      NIFI_CLUSTER_ADDRESS: 0.0.0.0
+      NIFI_REMOTE_INPUT_HOST: 0.0.0.0
+      NIFI_WEB_HTTPS_PORT : '8000'
+      NIFI_WEB_HTTP_PORT : '8443'
       # NIFI_HOME : /opt/nifi/nifi-current
       # NIFI_LOG_DIR : /opt/nifi/nifi-current/logs
       # NIFI_PID_DIR : /opt/nifi/nifi-current/run
       # NIFI_BASE_DIR  : /opt/nifi
-      NIFI_WEB_HTTP_PORT : '8443'
     ports:
+      - 8000:8000
       - 8443:8443
+      
     volumes:
-      - ./nifi-data/template/:/opt/nifi/conf/templates/
+      # - ./volume/nifi:/opt/nifi/nifi-current/
+      - ./data-aplikasi/csvdata:/opt/nifi/nifi-current/csvdata/
+      - ./data-aplikasi/template:/opt/nifi/nifi-current/template/
 
   my-sql:
+    build: mysql/.
     container_name: mysql
-    image: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
+      MYSQL_DATABASE: 'mysqldb'
       # So you don't have to use root, but you can if you like
       MYSQL_USER: 'user'
       # You can use whatever password you like
@@ -62,5 +70,24 @@ services:
       # Opens port 3306 on the container
       - '3306'
       # Where our data will be persisted
-    # volumes:
-    #   - ./mysql:/var/lib/mysq
+    volumes:
+      - ./volume/mysql:/var/lib/mysql
+
+  ocr_engine:
+    build: ocr_engine/.
+    container_name: ocr_engine
+    restart: always
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '5000:5000'
+    expose: 
+      - '5000'
+    command: [ "python","-m", "flask", "run", "--host=0.0.0.0"]
+    
+
+  jupyter_notebook:
+    image: jupyter/datascience-notebook
+    container_name: jupyter_notebook
+    ports:
+      - '8888:8888'
+    command: "start-notebook.sh"

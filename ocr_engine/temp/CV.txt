@@ -1,0 +1,65 @@
+Emlyn Simmen 
+ 
+SUMMARY 
+ 
+Extremely motivated to constantly develop my skill and grow professionally. I am confident in 
+my ability to come up with interesting ideas. Recently I have finished Microcredential 
+Certification for Associate Data Scientist and currently selected as one of The Bangkit 2022 
+Machine Learning Student and become Machine Learning Engineer at pukulenam with a 
+contract 
+ 
+EXPERIENCE 
+ 
+Bangkit Academy 2022 
+Machine Learning Student (February 2022 – July 2022) 
+ 
+● Learn the key concepts and applications of AI to solve a wide range of ML problems with 
+these specializations : Google IT Automation with Python, DeepLearning.AI TensorFlow 
+Developer Professional Certificate program, DeepLearning.AI TensorFlow Data and 
+Deployment and at the end, we enroll the Tensorflow Developer Certification exam 
+ 
+Machine Learning Engineer at Pukulenam 
+Machine Learning Engineer (April 2022 – June 2022) 
+ 
+● I got an opportunity to join Bangkit Company Capstone Project and help pukulenam team 
+to build MKSA/summary quality checker to check how good the summarized news they 
+have made. Our team use Siamese LSTM to detect semantic similarity between two data 
+ 
+Microcredential Certification – Associate Data Scientist 
+Associate Data Scientist (November 2021 – December 2021) 
+ 
+● In this certification, we have done 18 meetings with our mentor to discuss hard skills such 
+as tools for data science, data understanding, data visualization, data cleansing, building 
+a model, clustering, model deployment, a little bit about deep learning algorithms and 
+finally submit our final project. 
+ 
+Indonesian Science Competition at Computer Category 
+Gold Medalist (February 2021 – February 2021) 
+ 
+● Finishing 50 mathematical, coding, and competitive programming questions and become 
+one of the gold medalist 
+ 
+A Renewal Agent 
+Liaison Officer (December 2020 – March 2021) 
+ 
+● Helping the participant about our department’s big event such as explaining the rules of 
+the competition, oversee the progress of the event and most importantly become the 
+communicator between participant and committee 
+ 
+Competitive Programming Hology 3.0 
+Finalist (October 2012 – November 2020)● Finishing around 10 to 15 question about competitive programming (data structure, 
+searching, sorting, tree, graph, dynamic programming, geometry, combinatorics, etc) 
+ 
+ 
+EDUCATION 
+ 
+Yale University (2010 - 2014) 
+Bachelor of Information Technology – 3.66 
+ 
+SKILLS 
+ 
+● Python, C, C++ Programming 
+● HTML, CSS, Javascript 
+● Data scientist, Data analyst, Data engineer 
+● TensorFlow, Keras, scikit-learn 
+● NumPy, pandas, Matplotlib
